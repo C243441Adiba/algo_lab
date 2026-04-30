@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <string.h>
+int main()
+{
+    char text[100], pattern[100];
+    int i, j, n, m;
+    printf("Enter text: ");
+    scanf("%s", text);
+    printf("Enter pattern: ");
+    scanf("%s", pattern);
+    n = strlen(text);
+    m = strlen(pattern);
+    for(i = 0; i <= n - m; i++)
+    {
+        int match = 1;
+        for(j = 0; j < m; j++)
+        {
+            if(text[i + j] != pattern[j])
+            {
+                match = 0;
+                break;
+            }
+        }
+        if(match)
+            printf("Pattern found at index %d\n", i);
+    }
+    return 0;
+}
