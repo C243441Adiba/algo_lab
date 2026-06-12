@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+using namespace std;
+vector<int> parentNode;
+int findParent(int x)
+{
+if(parentNode[x] == x)
+return x;
+return parentNode[x] = findParent(parentNode[x]);
+}
+bool unionSet(int a, int b)
+{
+int pa = findParent(a);
+int pb = findParent(b);
+if(pa == pb)
+return false;
+parentNode[pb] = pa;
+return true;
+}
+struct Edge
+{
+int u, v, w;
+};
+bool cmp(Edge a, Edge b)
+{
+if(a.w != b.w)
+return a.w < b.w;
+return (a.u + a.v + a.w) < (b.u + b.v + b.w);
+}
+int main()
+{ int g_nodes, g_edges;
+cin >> g_nodes >> g_edges;
+vector<Edge> edges;
+for(int i = 0; i < g_edges; i++)
+{
+Edge e;
+cin >> e.u >> e.v >> e.w;
+if(e.u > e.v)
+swap(e.u, e.v);
+edges.push_back(e);
+}
+sort(edges.begin(), edges.end(), cmp);
+parentNode.resize(g_nodes + 1);
+for(int i = 1; i <= g_nodes; i++)
+parentNode[i] = i;
+int mstWeight = 0;
+for(int i = 0; i < edges.size(); i++)
+{
+if(unionSet(edges[i].u, edges[i].v))
+{
+mstWeight += edges[i].w;
+}
+}
+cout << mstWeight << endl;
+return 0; }
