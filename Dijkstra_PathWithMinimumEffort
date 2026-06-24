@@ -1,0 +1,57 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+int minimumEffortPath(vector<vector<int>>& heights) {
+    int rows = heights.size();
+    int cols = heights[0].size();
+    vector<vector<int>> dist(rows, vector<int>(cols, 1000000000));
+    vector<vector<bool>> visited(rows, vector<bool>(cols, false));
+    dist[0][0] = 0;
+    int dr[4] = {-1, 1, 0, 0};
+    int dc[4] = {0, 0, -1, 1};
+    for(int cnt = 0; cnt < rows * cols; cnt++) {
+        int r = -1;
+        int c = -1;
+        for(int i = 0; i < rows; i++) {
+            for(int j = 0; j < cols; j++) {
+                if(!visited[i][j] &&
+                   (r == -1 || dist[i][j] < dist[r][c])) {
+                    r = i;
+                    c = j;
+                }
+            }
+        }
+        if(r == rows - 1 && c == cols - 1) {
+            return dist[r][c];
+        }
+        visited[r][c] = true;
+        for(int i = 0; i < 4; i++) {
+            int nr = r + dr[i];
+            int nc = c + dc[i];
+            if(nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
+
+                int diff = abs(heights[r][c] - heights[nr][nc]);
+
+                int newEffort = max(dist[r][c], diff);
+
+                if(newEffort < dist[nr][nc]) {
+                    dist[nr][nc] = newEffort;
+                }
+            }
+        }
+    }
+    return 0;
+}
+int main() {
+    int rows, cols;
+    cin >> rows >> cols;
+    vector<vector<int>> heights(rows, vector<int>(cols));
+    for(int i = 0; i < rows; i++) {
+        for(int j = 0; j < cols; j++) {
+            cin >> heights[i][j];
+        }
+    }
+    cout << minimumEffortPath(heights) << endl;
+    return 0;
+}
