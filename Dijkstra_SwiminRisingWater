@@ -1,0 +1,70 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int swimInWater(vector<vector<int>>& grid) {
+    int n = grid.size();
+
+    vector<vector<int>> dist(n, vector<int>(n, 1000000000));
+    vector<vector<bool>> visited(n, vector<bool>(n, false));
+
+    dist[0][0] = grid[0][0];
+
+    int dr[4] = {-1, 1, 0, 0};
+    int dc[4] = {0, 0, -1, 1};
+
+    for(int cnt = 0; cnt < n * n; cnt++) {
+
+        int r = -1;
+        int c = -1;
+
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                if(!visited[i][j] &&
+                   (r == -1 || dist[i][j] < dist[r][c])) {
+                    r = i;
+                    c = j;
+                }
+            }
+        }
+
+        if(r == n - 1 && c == n - 1) {
+            return dist[r][c];
+        }
+
+        visited[r][c] = true;
+
+        for(int i = 0; i < 4; i++) {
+            int nr = r + dr[i];
+            int nc = c + dc[i];
+
+            if(nr >= 0 && nr < n && nc >= 0 && nc < n) {
+
+                int newCost = max(dist[r][c], grid[nr][nc]);
+
+                if(newCost < dist[nr][nc]) {
+                    dist[nr][nc] = newCost;
+                }
+            }
+        }
+    }
+
+    return dist[n - 1][n - 1];
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<vector<int>> grid(n, vector<int>(n));
+
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            cin >> grid[i][j];
+        }
+    }
+
+    cout << swimInWater(grid) << endl;
+
+    return 0;
+}
