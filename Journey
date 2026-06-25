@@ -1,0 +1,39 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+vector<vector<int>> graph;
+double answer = 0.0;
+void dfs(int node, int parent, int depth, double prob) {
+    int children = 0;
+    for(int i = 0; i < graph[node].size(); i++) {
+        if(graph[node][i] != parent) {
+            children++;
+        }
+    }
+    if(children == 0) {
+        answer += prob * depth;
+        return;
+    }
+    for(int i = 0; i < graph[node].size(); i++) {
+        int next = graph[node][i];
+        if(next == parent) {
+            continue;
+        }
+        dfs(next, node, depth + 1, prob / children);
+    }
+}
+int main() {
+    int n;
+    cin >> n;
+    graph.resize(n + 1);
+    for(int i = 0; i < n - 1; i++) {
+        int u, v;
+        cin >> u >> v;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+    dfs(1, 0, 0, 1.0);
+    cout.precision(15);
+    cout << fixed << answer << endl;
+    return 0;
+}
