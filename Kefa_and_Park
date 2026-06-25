@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+vector<vector<int>> graph;
+vector<int> cat;
+int n, m;
+int answer = 0;
+void dfs(int node, int parent, int consecutive) {
+    if(cat[node] == 1) {
+        consecutive++;
+    }
+    else {
+        consecutive = 0;
+    }
+    if(consecutive > m) {
+        return;
+    }
+    bool leaf = true;
+    for(int i = 0; i < graph[node].size(); i++) {
+        int next = graph[node][i];
+        if(next == parent) {
+            continue;
+        }
+        leaf = false;
+        dfs(next, node, consecutive);
+    }
+    if(leaf) {
+        answer++;
+    }
+}
+int main() {
+    cin >> n >> m;
+    cat.resize(n + 1);
+    for(int i = 1; i <= n; i++) {
+        cin >> cat[i];
+    }
+    graph.resize(n + 1);
+    for(int i = 0; i < n - 1; i++) {
+        int u, v;
+        cin >> u >> v;
+        graph[u].push_back(v);
+        graph[v].push_back(u);
+    }
+    dfs(1, 0, 0);
+    cout << answer << endl;
+    return 0;
+}
