@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+vector<vector<int>> ans;
+vector<int> subset;
+void backtrack(vector<int>& nums, int index)
+{
+    ans.push_back(subset);
+
+    for(int i = index; i < nums.size(); i++)
+    {
+        subset.push_back(nums[i]);
+        backtrack(nums, i + 1);
+        subset.pop_back();
+    }
+}
+int main()
+{
+    int n;
+    cin >> n;
+
+    vector<int> nums(n);
+
+    for(int i = 0; i < n; i++)
+    {
+        cin >> nums[i];
+    }
+    backtrack(nums, 0);
+    cout << "[";
+    for(int i = 0; i < ans.size(); i++)
+    {
+        cout << "[";
+
+        for(int j = 0; j < ans[i].size(); j++)
+        {
+            cout << ans[i][j];
+
+            if(j != ans[i].size() - 1)
+                cout << ",";
+        }
+        cout << "]";
+        if(i != ans.size() - 1)
+            cout << ",";
+    }
+    cout << "]";
+    return 0;
+}
