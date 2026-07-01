@@ -1,0 +1,53 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+int countBits(int n)
+{
+    int count = 0;
+
+    while(n > 0)
+    {
+        count += n % 2;
+        n /= 2;
+    }
+
+    return count;
+}
+int main()
+{
+    int turnedOn;
+    cin >> turnedOn;
+
+    vector<string> ans;
+
+    for(int hour = 0; hour < 12; hour++)
+    {
+        for(int minute = 0; minute < 60; minute++)
+        {
+            if(countBits(hour) + countBits(minute) == turnedOn)
+            {
+                string time = to_string(hour) + ":";
+
+                if(minute < 10)
+                {
+                    time += "0";
+                }
+                time += to_string(minute);
+                ans.push_back(time);
+            }
+        }
+    }
+    cout << "[";
+    for(int i = 0; i < ans.size(); i++)
+    {
+        cout << "\"" << ans[i] << "\"";
+
+        if(i != ans.size() - 1)
+        {
+            cout << ",";
+        }
+    }
+    cout << "]";
+    return 0;
+}
