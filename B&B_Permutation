@@ -1,0 +1,72 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<vector<int>> ans;
+vector<int> permutation;
+vector<bool> used;
+
+void backtrack(vector<int>& nums)
+{
+    if(permutation.size() == nums.size())
+    {
+        ans.push_back(permutation);
+        return;
+    }
+
+    for(int i = 0; i < nums.size(); i++)
+    {
+        if(used[i])
+            continue;
+
+        used[i] = true;
+        permutation.push_back(nums[i]);
+
+        backtrack(nums);
+
+        permutation.pop_back();
+        used[i] = false;
+    }
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+
+    vector<int> nums(n);
+
+    for(int i = 0; i < n; i++)
+    {
+        cin >> nums[i];
+    }
+
+    used.resize(nums.size(), false);
+
+    backtrack(nums);
+
+    cout << "[";
+
+    for(int i = 0; i < ans.size(); i++)
+    {
+        cout << "[";
+
+        for(int j = 0; j < ans[i].size(); j++)
+        {
+            cout << ans[i][j];
+
+            if(j != ans[i].size() - 1)
+                cout << ",";
+        }
+
+        cout << "]";
+
+        if(i != ans.size() - 1)
+            cout << ",";
+    }
+
+    cout << "]";
+
+    return 0;
+}
