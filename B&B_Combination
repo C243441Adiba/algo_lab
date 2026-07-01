@@ -1,0 +1,55 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+vector<vector<int>> ans;
+vector<int> combination;
+
+void backtrack(int n, int k, int start)
+{
+    if(combination.size() == k)
+    {
+        ans.push_back(combination);
+        return;
+    }
+
+    for(int i = start; i <= n; i++)
+    {
+        combination.push_back(i);
+        backtrack(n, k, i + 1);
+        combination.pop_back();
+    }
+}
+
+int main()
+{
+    int n, k;
+    cin >> n >> k;
+
+    backtrack(n, k, 1);
+
+    cout << "[";
+
+    for(int i = 0; i < ans.size(); i++)
+    {
+        cout << "[";
+
+        for(int j = 0; j < ans[i].size(); j++)
+        {
+            cout << ans[i][j];
+
+            if(j != ans[i].size() - 1)
+                cout << ",";
+        }
+
+        cout << "]";
+
+        if(i != ans.size() - 1)
+            cout << ",";
+    }
+
+    cout << "]";
+
+    return 0;
+}
